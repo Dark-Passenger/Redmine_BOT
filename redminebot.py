@@ -83,7 +83,9 @@ def IssueCreator(late_counter = 0):
     cursor.execute("""INSERT INTO ISSUES (ISSUE_ID, SUBJECT, HOURS ,ACTIVITY ,TEAM, END_DATE) VALUES (?,?,?,?,?,?)""", (issue.id, subject, round(time), Activity, Team, future))
     conn.commit()
     print("Issue saved")
-    if run != "late":
+    
+    #close after the last issue has been logged
+    if late_counter == 0:
         conn.close()
 
 if run == 'issue':
