@@ -48,30 +48,27 @@ def IssueCreator(late_counter = 0):
     print("Today is ",today)
 
     if day_name[today.weekday()].lower() == "saturday" or day_name[today.weekday()].lower() == "sunday":
-        print(today, " is a weekend skipping")
+        print(day_name[today.weekday()]," skipping ... ")
         return 1
 
     subject = input("Subject is : ")
     #Dumb-Dumb starts here
     if subject.lower().find('automation') != -1 or subject.lower().find('creat') != -1 or subject.lower().find('cod') != -1:
-        task = 'QA-Task'
-        Team = 'QA'
         Activity = "Coding"
-        project = '2.0.0'
-    elif subject.lower().find('test') != -1 or subject.lower().find('verif') != -1 or subject.lower().find('bug') != -1:
-        task = 'QA-Task'
-        Team = 'QA'
-        Activity = "Test Execution"
-        project = '1.8.0'
+    elif subject.lower().find('meeting') != -1 or subject.lower().find('discus') != -1:
+        Activity = "Meeting"
+    elif subject.lower().find('kt') != -1:
+        Activity = "KT"
     else:
-        task = 'QA-Task'
-        Team = 'QA'
         Activity = "Test Execution"
-        project = '1.8.0'
+    
+    task = 'QA-Task'
+    Team = 'QA'    
+    project = '2.0.0'
 
-    duration = int(input("duration : <In days>"))
+    duration = int(input("duration : <In days> for today only tasks enter 0 : "))
     future = today + timedelta(days=duration)
-    time = int(input("How long will it take <In hours> "))
+    time = int(input("How long will it take <In hours> : "))
 
     print("Creating issue  for : ",today)
 
@@ -84,7 +81,6 @@ def IssueCreator(late_counter = 0):
     conn.commit()
     print("Issue saved")
     
-    #close after the last issue has been logged
     if late_counter == 0:
         conn.close()
 
