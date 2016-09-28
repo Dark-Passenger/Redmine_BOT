@@ -66,7 +66,8 @@ def IssueCreator(late_counter = 0):
     Team = 'QA'    
     project = '2.0.0'
 
-    duration = int(input("duration : <In days> for today only tasks enter 0 : "))
+    duration = int(input("duration : <In days> defaults to only today : "))
+    duration = duration or 0
     future = today + timedelta(days=duration)
     time = int(input("How long will it take <In hours> : "))
 
