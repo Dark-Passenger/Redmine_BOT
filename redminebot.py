@@ -61,9 +61,9 @@ def IssueCreator(late_counter = 0):
         Activity = "KT"
     else:
         Activity = "Test Execution"
-    
+
     task = 'QA-Task'
-    Team = 'QA'    
+    Team = 'QA'
     project = '2.0.0'
 
     duration = int(input("duration : <In days> defaults to only today : "))
@@ -74,14 +74,14 @@ def IssueCreator(late_counter = 0):
     print("Creating issue  for : ",today)
 
     issue = red.issue.create(project_id=projects[project], subject=subject, tracker_id=task_id[task], assigned_to_id=user_id[username], start_date=today, due_date=future, estimated_hours=time, done_ratio=0)
-    
+
     print("issue with id : ",issue.id," created")
     print("Saving issue ...")
 
     cursor.execute("""INSERT INTO ISSUES (ISSUE_ID, SUBJECT, HOURS ,ACTIVITY ,TEAM, END_DATE) VALUES (?,?,?,?,?,?)""", (issue.id, subject, round(time), Activity, Team, future))
     conn.commit()
     print("Issue saved")
-    
+
     if late_counter == 0:
         conn.close()
 
@@ -105,39 +105,39 @@ elif run == 'time' :
 
 
         status = red.issue.update(issue_id, status_id=status_id['Completed'], done_ratio=100)
-        
+
         if status == True:
             print("Issue status Updated")
         else:
             print("Issue failed to update")
-        
+
         coin_toss = choice([0, 1, 2])
 
         time_spent = duration + coin_toss
-        
+
         print("Entering time now ...")
-        
+
         issue = red.time_entry.create(issue_id=issue_id, spent_on=end_time, hours=time_spent, activity_id=activity_id[activity], custom_fields=[{'id': 64, 'value': team}])
-        
+
         print("time entry for issue id : ",issue_id," added")
 
         close_status = red.issue.update(issue_id, status_id=status_id['Closed'], done_ratio=100)
-        
+
         if close_status == True:
             print("Issue Closed")
         else:
             print("Issue closing failed")
-    
+
     conn.close()
     print("All issue time entries created deleting db file now...")
-    
+
     remove('redmine.db')
     print(" Database Removed")
 
 elif run == "late":
     print("you are using a secret feature ! shhhh")
     late_counter = int(input("how late are you ?"))
-    
+
     while late_counter > -1:
         IssueCreator(late_counter)
         late_counter -= 1
